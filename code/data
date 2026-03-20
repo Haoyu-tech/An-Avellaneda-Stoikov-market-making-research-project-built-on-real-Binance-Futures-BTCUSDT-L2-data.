@@ -1,0 +1,4 @@
+raise SystemExit(
+    "Deprecated script: use `code/collect_as_l2.py` for aligned L2 collection for A-S model backtests."
+)
+
