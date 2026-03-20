@@ -1,6 +1,4 @@
-# Chapter3-BitcoinUSDT
-
-An Avellaneda-Stoikov market-making research project built on real Binance Futures `BTCUSDT` L2 data.
+# BitcoinUSDT An Avellaneda-Stoikov market-making research project built on real Binance Futures `BTCUSDT` L2 data.
 
 This repository is not meant to be a production trading system. Its goal is to make the full research workflow reproducible:
 
