@@ -1,0 +1,18 @@
+# Local environment and runtime files
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+*.pyc.*
+.ipynb_checkpoints/
+.pytest_cache/
+.DS_Store
+Thumbs.db
+
+# Local raw/generated data
+/data/
+/wrds/
+/logs/
