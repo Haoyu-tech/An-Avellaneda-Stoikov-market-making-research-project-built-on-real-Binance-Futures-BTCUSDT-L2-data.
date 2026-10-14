@@ -1,4 +1,6 @@
-# BitcoinUSDT An Avellaneda-Stoikov market-making research project built on real Binance Futures `BTCUSDT` L2 data.
+# Avellaneda–Stoikov Market Making on Binance BTCUSDT L2 Data
+
+[Reproduction guide](docs/REPRODUCIBILITY.md) · [Code and artifact map](docs/REPOSITORY_MAP.md)
 
 This repository is not meant to be a production trading system. Its goal is to make the full research workflow reproducible:
 
@@ -54,7 +56,7 @@ code/
 |- README.md
 |- replay_l2.py
 |- export_l2_html.py
-`- data/
+`- data/                         # generated locally
 ```
 
 Main files:
@@ -70,7 +72,7 @@ Main files:
 - `run_as_l2_background.ps1`
   Helper script for background collection
 
-`replay_l2.py`, `export_l2_html.py`, and `code/data/` are older experimental leftovers and are not part of the current main workflow.
+`replay_l2.py`, `export_l2_html.py`, and `code/data` are older experimental leftovers and are not part of the current main workflow.
 
 ## Output Layout
 
@@ -163,34 +165,34 @@ These defaults are research-oriented and should not be treated as production par
 
 ## Environment
 
-The project is currently used in a Windows + Conda setup. Example commands assume:
+Run commands from the repository root in a Python 3.10+ environment.
 
 ```powershell
-D:\software\anaconda3\envs\quant\python.exe
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 ```
 
-If your Python path is different, replace it with your own interpreter.
-
-The code mainly depends on the standard library plus common scientific / plotting packages. If something is missing, install the dependency reported by the error message in your current environment.
+The core pipeline uses `requests` and `websockets`; the backtest and HTML renderer use the standard library. Dependencies are unpinned pending validation of a reference environment.
 
 ## Quick Start
 
 ### 1. Collect data only
 
 ```powershell
-& D:\software\anaconda3\envs\quant\python.exe .\code\collect_as_l2.py --symbol BTCUSDT --max-seconds 60 --include-trades --quiet --flush-every 500
+python .\code\collect_as_l2.py --symbol BTCUSDT --max-seconds 60 --include-trades --quiet --flush-every 500
 ```
 
 ### 2. Run a backtest on an existing session
 
 ```powershell
-& D:\software\anaconda3\envs\quant\python.exe .\code\as_backtest.py --session-dir .\data\as_l2\btcusdt\btcusdt_20260321_101335 --initial-cash 1000 --dynamic-window-seconds 10 --max-backtest-seconds 60 --output-json .\data\as_l2\btcusdt\btcusdt_20260321_101335\baseline\summary_continuous_60s.json
+python .\code\as_backtest.py --session-dir .\data\as_l2\btcusdt\btcusdt_20260321_101335 --initial-cash 1000 --dynamic-window-seconds 10 --max-backtest-seconds 60 --output-json .\data\as_l2\btcusdt\btcusdt_20260321_101335\baseline\summary_continuous_60s.json
 ```
 
 ### 3. Render HTML
 
 ```powershell
-& D:\software\anaconda3\envs\quant\python.exe .\code\plot_as_backtest.py --summary-json .\data\as_l2\btcusdt\btcusdt_20260321_101335\baseline\summary_continuous_60s.json --output-html .\data\as_l2\btcusdt\btcusdt_20260321_101335\baseline\plot_continuous_60s.html
+python .\code\plot_as_backtest.py --summary-json .\data\as_l2\btcusdt\btcusdt_20260321_101335\baseline\summary_continuous_60s.json --output-html .\data\as_l2\btcusdt\btcusdt_20260321_101335\baseline\plot_continuous_60s.html
 ```
 
 ## One-Command Pipeline
@@ -198,7 +200,7 @@ The code mainly depends on the standard library plus common scientific / plottin
 The recommended entry point is:
 
 ```powershell
-& D:\software\anaconda3\envs\quant\python.exe .\code\run_as_pipeline.py --symbol BTCUSDT --max-seconds 60 --backtest-seconds 60 --collector-quiet
+python .\code\run_as_pipeline.py --symbol BTCUSDT --max-seconds 60 --backtest-seconds 60 --collector-quiet
 ```
 
 It automatically:
@@ -214,7 +216,7 @@ It automatically:
 To force a session name:
 
 ```powershell
-& D:\software\anaconda3\envs\quant\python.exe .\code\run_as_pipeline.py --symbol BTCUSDT --max-seconds 300 --backtest-seconds 300 --collector-quiet --session-name btcusdt_pipeline_5min
+python .\code\run_as_pipeline.py --symbol BTCUSDT --max-seconds 300 --backtest-seconds 300 --collector-quiet --session-name btcusdt_pipeline_5min
 ```
 
 ## Pipeline Arguments
